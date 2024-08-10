@@ -49,6 +49,17 @@ int throttleButton_off(int num) {
     return num;
 }
 
+void digitcutting(uint8_t* arrPtr,int number) {
+    uint8_t byte1 = (number >> 24) & 0xFF; // Extract the highest 8 bits
+    uint8_t byte2 = (number >> 16) & 0xFF; // Extract the next 8 bits
+    uint8_t byte3 = (number >> 8) & 0xFF; // Extract the next 8 bits
+    uint8_t byte4 = number & 0xFF; // Extract the lowest 8 bits
+    arrPtr[0] = byte1;
+    arrPtr[1] = byte2;
+    arrPtr[2] = byte3;
+    arrPtr[3] = byte4;
+    
+}
 
 int main() {
 
@@ -57,7 +68,18 @@ int main() {
     cout << hex << powerButton_on(wanagetspeed(384)) << "\n";
     cout << hex << throttleButton_on( powerButton_on(wanagetspeed(384))) << "\n";
     cout <<hex<< powerButton_off(powerButton_on(wanagetspeed(384))) << "\n";
-    cout <<hex<< throttleButton_off(throttleButton_on(powerButton_on(wanagetspeed(384))));
+    cout <<hex<< throttleButton_off(throttleButton_on(powerButton_on(wanagetspeed(384)))) << "\n";
+
+    
+    uint8_t arr[] = { 0x44,0x44,0x44,0x44 };
+    digitcutting(arr, wanagetspeed(384));
+
+    for (int  i = 0; i < 4; i++)
+    {
+        cout << "Byte "<<i<<": " << hex << static_cast<int>(arr[i]) << endl;
+    }
+
+    
 
 
     return 0;
